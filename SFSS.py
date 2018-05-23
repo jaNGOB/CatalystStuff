@@ -3,8 +3,8 @@ import ccxt
 
 exchange = ccxt.bitmex({
     'enableRateLimit': True,
-    'apiKey': '4p4xhRuqUJOV2wtTyW7TIrz-',
-    'secret': 'Joz8o32ZMsZ5_Xb47g100ieNpkVN1-BuF1mwklQacshpoJf1',
+    'apiKey': '',
+    'secret': '',
 })
 if 'test' in exchange.urls:
     exchange.urls['api'] = exchange.urls['test']

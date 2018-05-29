@@ -16,7 +16,7 @@ lower = 200
 multiplyBy = 2
 distance = 100
 power = 0
-pair = 'XBTM18'
+pair = 'BTC/USD'
 
 in_long = False
 in_short = False
@@ -35,7 +35,7 @@ def weAreLong(price):
 
     if price < Crit:
         amount = (ORDER_SIZE*(multiplyBy**power))
-        createorder('sell', amount, Crit)
+        createorder('sell', amount)
         in_long = False
         in_short = True
         print('Kill Long! GO SHORT! Sold {amount} @ {price}'.format(amount=amount, price=price))
@@ -44,14 +44,14 @@ def weAreLong(price):
     elif price > TP:
         in_long = False
         in_short = False
-        createorder('sell', sellamount, TP)
+        createorder('sell', sellamount)
         power = 0
         print('We made it! Sold @ {price}'.format(price=price))
 
     elif price < SL:
         in_long = False
         in_short = False
-        createorder('sell', sellamount, SL)
+        createorder('sell', sellamount)
         power = 0
         print('We lost it all! Sold @ {price}'.format(price=price))
 
@@ -79,7 +79,7 @@ def weAreShort(price):
 
     if price > Crit:
         amount = (ORDER_SIZE*(multiplyBy**power))
-        createorder('buy', amount, Crit)
+        createorder('buy', amount)
         in_long = True
         in_short = False
         print('Kill Short! GO LONG! Bought {amount} @ {price}'.format(amount=amount, price=price))
@@ -88,14 +88,14 @@ def weAreShort(price):
     elif price < TP:
         in_long = False
         in_short = False
-        createorder('buy', sellamount, TP)
+        createorder('buy', sellamount)
         power = 0
         print('We made it! Sold @ {price}'.format(price=price))
 
     elif price > SL:
         in_long = False
         in_short = False
-        createorder('buy', sellamount, SL)
+        createorder('buy', sellamount)
         power = 0
         print('We lost it all! Sold @ {price}'.format(price=price))
 
@@ -124,9 +124,9 @@ def getcurrentprice():
         getcurrentprice()
 
 
-def createorder(side, amount, price):
+def createorder(side, amount):
     try:
-        exchange.create_order(pair, 'limit', side, amount, price)
+        exchange.create_order(pair, 'market', side, amount)
     except (ccxt.ExchangeError, ccxt.AuthenticationError, ccxt.ExchangeNotAvailable, ccxt.RequestTimeout) as error:
         print('Got an error', type(error).__name__, error.args, ', retrying in 30 seconds...')
         time.sleep(30)
@@ -158,7 +158,7 @@ if __name__ == '__main__':
             weAreShort(price)
 
         else:
-            createorder('buy', First_Order, price)
+            createorder('buy', First_Order)
             in_long = True
             in_short = False
             cost_basis = price
